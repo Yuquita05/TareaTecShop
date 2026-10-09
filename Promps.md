@@ -1,4 +1,5 @@
 # TareaTecShop
+Yunier Obando Arias 
 
 #S1
 Promp #1
