@@ -1,5 +1,6 @@
 # TareaTecShop
 
+#S1
 Promp #1
 User: 
 CONTEXTO:  Toma shipping service
@@ -148,3 +149,105 @@ public class ShippingService {
     }
 }
 ```
+
+
+#S2
+
+Promp #1
+
+CONTEXTO: Toma cartitem
+TAREA: crea una interfaz iExtras que sea implementada por cartitem
+ESTRUCTURA: la interfaz solo debe tener los metodos getPrice y describe
+REGLAS: Qué NO debe cambiar (p. ej. "no modifiques CorreosApi");
+sin librerías nuevas; mantener el paquete tecshop; no tocar otros archivos.
+TERMINADO: Compila; Main imprime exactamente la salida base;
+mostrame solo el archivo nuevo/modificado.
+
+
+package tecshop;
+
+public interface iExtras {
+    double getPrice();
+    String describe();
+}
+
+package tecshop;
+
+public class CartItem implements iExtras {
+    private final String name;
+    private final double basePrice;
+    private final boolean giftWrap;
+    private final boolean insurance;
+    private final boolean express;
+
+    // TODO: marketing wants 4 more extras next sprint:
+    //       engraving, eco-packaging, extended warranty, priority support...
+    public CartItem(String name, double basePrice, boolean giftWrap, boolean insurance, boolean express) {
+        this.name = name;
+        this.basePrice = basePrice;
+        this.giftWrap = giftWrap;
+        this.insurance = insurance;
+        this.express = express;
+    }
+
+    public double getPrice() {
+        double price = basePrice;
+        if (giftWrap) {
+            price += 1500;
+        }
+        if (insurance) {
+            price += price * 0.05;
+        }
+        if (express) {
+            price += 2500;
+        }
+        return price;
+    }
+
+    public String describe() {
+        String text = name;
+        if (giftWrap) {
+            text += " + gift wrap";
+        }
+        if (insurance) {
+            text += " + insurance";
+        }
+        if (express) {
+            text += " + express";
+        }
+        return text;
+    }
+}
+
+Promp #2
+
+CONTEXTO: Toma cartitem y iExtras
+TAREA: Crea una clase Extras que implemente iExtras
+ESTRUCTURA: Tiene private final engraving
+REGLAS: Qué NO debe cambiar (p. ej. "no modifiques CorreosApi");
+sin librerías nuevas; mantener el paquete tecshop; no tocar otros archivos.
+TERMINADO: Compila; Main imprime exactamente la salida base;
+mostrame solo el archivo nuevo/modificado.
+
+
+package tecshop;
+
+public class Extras implements iExtras {
+    private final iExtras engraving;
+
+    public Extras(iExtras engraving) {
+        this.engraving = engraving;
+    }
+
+    @Override
+    public double getPrice() {
+        return engraving.getPrice() + 3000;
+    }
+
+    @Override
+    public String describe() {
+        return engraving.describe() + " + engraving";
+    }
+}
+
+
