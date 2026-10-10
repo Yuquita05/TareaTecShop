@@ -156,65 +156,40 @@ public class ShippingService {
 
 Promp #1
 
-CONTEXTO: Toma cartitem
-TAREA: crea una interfaz iExtras que sea implementada por cartitem
-ESTRUCTURA: la interfaz solo debe tener los metodos getPrice y describe
-REGLAS: Qué NO debe cambiar (p. ej. "no modifiques CorreosApi");
-sin librerías nuevas; mantener el paquete tecshop; no tocar otros archivos.
-TERMINADO: Compila; Main imprime exactamente la salida base;
-mostrame solo el archivo nuevo/modificado.
+CONTEXTO:  toma cartitem 
+TAREA: crea una clase ProductoCompleto que herede de cartitem
+ESTRUCTURA:  tiene un private boolean engraving, crea su metodo constructor con super de cartitem, sobreescribe los metodos getPrice y describe en ProductoCompleto usando el super de cartitem
+REGLAS:      Qué NO debe cambiar (p. ej. "no modifiques CorreosApi");
+             sin librerías nuevas; mantener el paquete tecshop; no tocar otros archivos.
+TERMINADO:   Compila; Main imprime exactamente la salida base;
+             mostrame solo el archivo nuevo/modificado.
 
 
 package tecshop;
 
-public interface iExtras {
-    double getPrice();
-    String describe();
-}
+public class ProductoCompleto extends CartItem {
+    private boolean engraving;
 
-package tecshop;
-
-public class CartItem implements iExtras {
-    private final String name;
-    private final double basePrice;
-    private final boolean giftWrap;
-    private final boolean insurance;
-    private final boolean express;
-
-    // TODO: marketing wants 4 more extras next sprint:
-    //       engraving, eco-packaging, extended warranty, priority support...
-    public CartItem(String name, double basePrice, boolean giftWrap, boolean insurance, boolean express) {
-        this.name = name;
-        this.basePrice = basePrice;
-        this.giftWrap = giftWrap;
-        this.insurance = insurance;
-        this.express = express;
+    public ProductoCompleto(String name, double basePrice, boolean giftWrap, boolean insurance,
+            boolean express, boolean engraving) {
+        super(name, basePrice, giftWrap, insurance, express);
+        this.engraving = engraving;
     }
 
+    @Override
     public double getPrice() {
-        double price = basePrice;
-        if (giftWrap) {
-            price += 1500;
-        }
-        if (insurance) {
-            price += price * 0.05;
-        }
-        if (express) {
-            price += 2500;
+        double price = super.getPrice();
+        if (engraving) {
+            price += 3000;
         }
         return price;
     }
 
+    @Override
     public String describe() {
-        String text = name;
-        if (giftWrap) {
-            text += " + gift wrap";
-        }
-        if (insurance) {
-            text += " + insurance";
-        }
-        if (express) {
-            text += " + express";
+        String text = super.describe();
+        if (engraving) {
+            text += " + engraving";
         }
         return text;
     }
@@ -222,33 +197,46 @@ public class CartItem implements iExtras {
 
 Promp #2
 
-CONTEXTO: Toma cartitem y iExtras
-TAREA: Crea una clase Extras que implemente iExtras
-ESTRUCTURA: Tiene private final engraving
+CONTEXTO: toma main y producto completo
+TAREA: reemplaza los new cartitem por new producto completo
+ESTRUCTURA: Nombre del tipo; qué implementa/extiende; atributos (¿private? ¿final?);
+parámetros del constructor; firmas de métodos; a qué objeto delega
+cada método y qué hace antes/después de delegar.
 REGLAS: Qué NO debe cambiar (p. ej. "no modifiques CorreosApi");
 sin librerías nuevas; mantener el paquete tecshop; no tocar otros archivos.
 TERMINADO: Compila; Main imprime exactamente la salida base;
 mostrame solo el archivo nuevo/modificado.
 
-
 package tecshop;
 
-public class Extras implements iExtras {
-    private final iExtras engraving;
+public class ProductoCompleto extends CartItem {
+    private final boolean engraving;
 
-    public Extras(iExtras engraving) {
+    public ProductoCompleto(String name, double basePrice, boolean giftWrap, boolean insurance,
+            boolean express, boolean engraving) {
+        super(name, basePrice, giftWrap, insurance, express);
         this.engraving = engraving;
     }
 
     @Override
     public double getPrice() {
-        return engraving.getPrice() + 3000;
+        double price = super.getPrice();
+        if (engraving) {
+            price += 3000;
+        }
+        return price;
     }
 
     @Override
     public String describe() {
-        return engraving.describe() + " + engraving";
+        String text = super.describe();
+        if (engraving) {
+            text += " + engraving";
+        }
+        return text;
     }
 }
 
 
+
+        
